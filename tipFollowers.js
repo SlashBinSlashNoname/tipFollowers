@@ -12,10 +12,10 @@ var tipFollowers = {
     
     // Specify you api , use an alternative account to prevent spaming your original (ie using @itsnotabot for sending in the name of @itsnotan3rror)
 
-    twitterConsumerKey: 'qpvxkcTru2Rk63IYQfzfPk1IP',
-    twitterConsumerSecret: '5BVfP7V2kWJVnMT2c8aC1T7lJVNz8OVWaaPjRHCtATzWMsVIE4',
-    twitterAccessTokenKey: '4655677287-4pqJVkcBBRnXFM6Qjkk6hcNUuQnW0VfZAurjtHB',
-    twitterAccessTokenSecret: 'VSOTG7NkLOBXONA1gC7aVpTopeeaOHSlHtUzuxudArP1Q',
+    twitterConsumerKey: '',
+    twitterConsumerSecret: '',
+    twitterAccessTokenKey: '',
+    twitterAccessTokenSecret: '',
     
     testnet: true,
     
