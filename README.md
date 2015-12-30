@@ -8,15 +8,19 @@ Basically, it is a bot that sends a fixed amount of true money (yay) to all your
 
 * Unpack tipFollowers on a working directory of a computer where [NodeJs](https://nodejs.org) is installed.
 * Install twitter's package for nodeJs
-
-      npm install twitter
+```
+npm install twitter
+``` 
       
 * Specify your message by replacing the _tipFollowers.message_ variable.
 * There is also some vars that you need to adjust, especially _tipFollowers.amount_ which is the amount you want to spread. 
 * Put enough money on [ChangeTip](https://www.changetip.com)
 * Launch it via
 
-      node tipFollowers.js
+```
+node tipFollowers.js
+```
+      
     
 Have a great tipping christmas !
 
