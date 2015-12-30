@@ -12,18 +12,18 @@ var tipFollowers = {
     
     // Specify you api , use an alternative account to prevent spaming your original (ie using @itsnotabot for sending in the name of @itsnotan3rror)
 
-    twitterConsumerKey: 'qpvxkcTru2Rk63IYQfzfPk1IP',
-    twitterConsumerSecret: '5BVfP7V2kWJVnMT2c8aC1T7lJVNz8OVWaaPjRHCtATzWMsVIE4',
-    twitterAccessTokenKey: '4655677287-4pqJVkcBBRnXFM6Qjkk6hcNUuQnW0VfZAurjtHB',
-    twitterAccessTokenSecret: 'VSOTG7NkLOBXONA1gC7aVpTopeeaOHSlHtUzuxudArP1Q',
+    twitterConsumerKey: '',
+    twitterConsumerSecret: '',
+    twitterAccessTokenKey: '',
+    twitterAccessTokenSecret: '',
     
     testnet: true,
     
     // Message to send
-    message: 'Merry Christmas %screen_name% ! %sender% sent you %amount% bits worth of Bitcoins ! @changetip',
+    message: 'Merry Christmas %screen_name% ! %sender% sent you %amount% bits worth of Bitcoins for following him ! @changetip',
     
     //amount, in bits.
-    maxAmount: 15000,
+    maxAmount: 13000,
     
     // 0 to define automatically or force it
     amount: 0, 
@@ -34,11 +34,14 @@ var tipFollowers = {
     params: {
         screen_name: 'itsnotan3rror',   // screen name, source of the tip
         cursor: -1,                     // cursor, working with pagination
-        count:40
+        count:30
     },
     
     // delay between queries, prevent the limit of api calls (not needed on status)
-    delayQueryFollowers: 60000, 
+    delayQueryFollowers: 70000, 
+    
+    // sent stack
+    sentTo: [],
     
     // api Twitter is stored here
     api : null,
@@ -85,24 +88,28 @@ var tipFollowers = {
         tipFollowers.api.get('followers/list',tipFollowers.params, function(error, followers, response){
             if (!error) {
                  
-                // define next cursor with next_cursor
-                tipFollowers.params.cursor = followers.next_cursor;
+                
 
                    // Send tips to followers
                    tipFollowers.sendTipToUsers(followers.users, function(array) {
                        
-                       // If we are not at the last cursor 
-                       if( tipFollowers.params.cursor != 0 ){
-                        console.log('chatte');
-                            // See the time it takes 
-                            var time = tipFollowers.delayQueryFollowers - (new Date().getTime()-start);
-                            time = (time>0)?time:0;
-                            
-                            // Print it to have a log
-                            console.log('Ok, waiting for '+time/1000+' seconds');
-                            
-                            // Set it as interval before retrieving another stack of followers
-                            setInterval(tipFollowers.retrieveFollowers, time);
+                        // If we are not at the last cursor 
+                        if( tipFollowers.params.cursor != 0 ){
+                        
+                        // define next cursor with next_cursor
+                        tipFollowers.params.cursor = followers.next_cursor;
+                        
+                   
+                        // See the time it takes 
+                        var time = tipFollowers.delayQueryFollowers - (new Date().getTime()-start);
+                        time = (time>0)?time:0;
+                        
+                        // Print it to have a log
+                        console.log('Ok, waiting for '+time/1000+' seconds');
+                        
+                        // Set it as interval before retrieving another stack of followers
+                        setInterval(tipFollowers.retrieveFollowers, time);
+                        
                        }
                    });
                 
@@ -116,29 +123,42 @@ var tipFollowers = {
          
     },
     sendTipToUsers: function(users,callback){
-       
+    
+       console.log('Sending to a bundle of '+ users.length+ ' accounts'); // -1 if cursor > 1
+
         // Foreach users, as val
-        users.forEach(function(val, index, array){
-            
-            if(tipFollowers.params.cursor != -1 && index != 0){
+        users.forEach(function(user, index, array){
+      
+      
+            // jump the first user of the non first page
+            if( tipFollowers.params.cursor == -1 || index != 0 ){
                 
                 // Send Message
-                tipFollowers.sendMessage(val);
+                tipFollowers.sendMessage(user);
                 
             }
             
             // If we have ended the loop
             if (array.length == index+1)
                 callback(array);
+            
         });
 
     },
     sendMessage:function(user){
         
+        //if on stack, stop sending
+        if (tipFollowers.sentTo.indexOf(user.screen_name) > -1) {
+            return false;
+        }
+        
+        // put on stack
+        tipFollowers.sentTo.push(user.screen_name);
+        
         // placeholders
         var message = tipFollowers.message.replace(/%screen_name%/g, '@'+user.screen_name)
         message = message.replace(/%sender%/g, '@'+tipFollowers.params.screen_name);
-        message = message.replace(/%amount%/g, '@'+tipFollowers.amount);
+        message = message.replace(/%amount%/g, tipFollowers.amount);
         
         // If message is over 140, refuse to launch it @todo
         if(message.length > 140){
@@ -150,10 +170,14 @@ var tipFollowers = {
         var status = {
           status: message
         };
-        console.log(message);
-        //tipFollowers.api.post('statuses/update', status, function(error, tweet, response){
-        //    console.log(tweet);
-        //});
+        
+        tipFollowers.api.post('statuses/update', status, function(error, tweet, response){
+            if(!error){
+                console.log(message);
+            } else {
+                console.error(error);
+            }
+        });
         
     },
    
