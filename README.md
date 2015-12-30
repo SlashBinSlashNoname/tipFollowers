@@ -8,6 +8,8 @@ Basically, it is a bot that sends a fixed amount of true money (yay) to all your
 
 * Unpack tipFollowers on a working directory of a computer where [NodeJs](https://nodejs.org) is installed.
 * Install twitter's package for nodeJs
+
+
 ```
 npm install twitter
 ``` 
@@ -17,10 +19,10 @@ npm install twitter
 * Put enough money on [ChangeTip](https://www.changetip.com)
 * Launch it via
 
+
 ```
 node tipFollowers.js
 ```
-      
     
 Have a great tipping christmas !
 
