@@ -20,6 +20,13 @@ Basically, it is a bot that sends a fixed amount of true money (yay) to all your
     
 Have a great tipping christmas !
 
+## Note
+
+Yes I should have done this with changetip package for nodejs but wanted instead to have a functionnal solution that speaks about Bitcoin
+
+## Toto
+
+Ethereum ?
 
 
 -- _SlashBinSlashNoname_ - base64_decode(c2xhc2hiaW5zbGFzaG5vbmFtZQ==)@gmail.com
