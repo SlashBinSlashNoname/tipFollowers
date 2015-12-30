@@ -27,8 +27,8 @@ node tipFollowers.js
 Have a great tipping christmas !
 
 ## Note
-
-Yes I should have done this with changetip package for nodejs but wanted instead to have a functionnal solution that speaks about Bitcoin
+It is not balanced with the twitter rates limits so use it with extreme caution or your app may be /mute/kick/ban xD
+Yes I should have done this with changetip package for nodejs but wanted instead to have a functional solution that speaks about Bitcoin
 
 ## Todo
 
