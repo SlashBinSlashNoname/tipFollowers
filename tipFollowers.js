@@ -1,12 +1,7 @@
-
 var http = require("http");
 var Twitter = require('twitter');
 
-
 //Connect to Twitter Api
-
-    
-    
 
 var tipFollowers = {
     
@@ -27,10 +22,7 @@ var tipFollowers = {
     
     // 0 to define automatically or force it
     amount: 0, 
-    
-    
-    
-    
+
     params: {
         screen_name: 'itsnotan3rror',   // screen name, source of the tip
         cursor: -1,                     // cursor, working with pagination
@@ -45,9 +37,7 @@ var tipFollowers = {
     
     // api Twitter is stored here
     api : null,
-    
-    
-    
+
     run: function(){
 
         tipFollowers.api = new Twitter({
@@ -56,8 +46,8 @@ var tipFollowers = {
             access_token_key: tipFollowers.twitterAccessTokenKey,
             access_token_secret: tipFollowers.twitterAccessTokenSecret
         });
+        
         // get an amount 
-
         tipFollowers.retrieveUserInfo(function(info){
             
             if(tipFollowers.amount == 0)
@@ -66,8 +56,7 @@ var tipFollowers = {
             console.log('Sending ' +tipFollowers.amount + ' bits per followers to '+ info.followers_count+ ' followers');
             tipFollowers.retrieveFollowers();
         });
-        
-            
+
     },
     retrieveUserInfo:function(callback){
          tipFollowers.api.get('users/show',{screen_name: tipFollowers.params.screen_name}, function(error, info, response){
@@ -76,7 +65,6 @@ var tipFollowers = {
             } else {
                 console.error(error);
             }
-           
         });
     },
     retrieveFollowers: function(){
@@ -87,9 +75,7 @@ var tipFollowers = {
         // Retrieve users
         tipFollowers.api.get('followers/list',tipFollowers.params, function(error, followers, response){
             if (!error) {
-                 
-                
-
+                    
                    // Send tips to followers
                    tipFollowers.sendTipToUsers(followers.users, function(array) {
                        
@@ -99,7 +85,6 @@ var tipFollowers = {
                         // define next cursor with next_cursor
                         tipFollowers.params.cursor = followers.next_cursor;
                         
-                   
                         // See the time it takes 
                         var time = tipFollowers.delayQueryFollowers - (new Date().getTime()-start);
                         time = (time>0)?time:0;
@@ -128,7 +113,6 @@ var tipFollowers = {
 
         // Foreach users, as val
         users.forEach(function(user, index, array){
-      
       
             // jump the first user of the non first page
             if( tipFollowers.params.cursor == -1 || index != 0 ){
